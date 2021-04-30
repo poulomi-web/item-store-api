@@ -1,1 +1,2 @@
-# item-store-api
+The API helps users create a list of items with attributes name, price and store. Users can post an item, delete an item, update an item and retrieve items from the database using HTTP methods. The users are needed to register first and then their login is authenticated using Jwt-token, after which the CRUD operations are allowed on the database. 
+The project uses flask_restful and SQLAlchemy to create the API.
