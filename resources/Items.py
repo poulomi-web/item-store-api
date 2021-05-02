@@ -9,6 +9,10 @@ class Item(Resource):
                         type=float, 
                         required=True, 
                         help="This is a mandatory payload input field")
+    parser.add_argument('store_id', 
+                        type=int, 
+                        required=True, 
+                        help="This is a mandatory payload input field")
    
     @jwt_required()
     def get(self, name):
@@ -20,7 +24,7 @@ class Item(Resource):
     def post(self, name):
         data = Item.parser.parse_args()
         item = ItemModel.find_by_name(name)
-        new_item = ItemModel(name, data['price'])
+        new_item = ItemModel(name, data['price'], data['store_id'])
 
         if item:
             return {'message': f'The item {name} already exists in the database'}, 400
@@ -37,12 +41,13 @@ class Item(Resource):
         data = Item.parser.parse_args()
 
         item = ItemModel.find_by_name(name)
-        new_item = ItemModel(name, data['price'])
+        new_item = ItemModel(name, data['price'], data['store_id'])
 
         if item is None:
             item = new_item
         else:
             item.price = data['price']
+            item.store_id = data['store_id']
 
         ItemModel.upsert(item)
         return new_item.json()
